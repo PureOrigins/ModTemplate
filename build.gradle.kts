@@ -2,7 +2,7 @@ plugins {
     id("fabric-loom")
     val kotlinVersion: String by System.getProperties()
     kotlin("jvm").version(kotlinVersion)
-    `maven-publish`
+    kotlin("plugin.serialization").version(kotlinVersion)
 }
 base {
     val archivesBaseName: String by project
@@ -13,7 +13,9 @@ version = modVersion
 val mavenGroup: String by project
 group = mavenGroup
 minecraft {}
-repositories {}
+repositories {
+    maven(url = "https://jitpack.io")
+}
 dependencies {
     val minecraftVersion: String by project
     minecraft("com.mojang:minecraft:$minecraftVersion")
@@ -25,6 +27,8 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
     val fabricKotlinVersion: String by project
     modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
+    val configurationVersion: String by project
+    modImplementation("com.github.PureOrigins:PureConfiguration:$configurationVersion")
 }
 tasks {
     val javaVersion = JavaVersion.VERSION_16
@@ -49,23 +53,5 @@ tasks {
         sourceCompatibility = javaVersion
         targetCompatibility = javaVersion
         withSourcesJar()
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = "com.github.PureOrigins"
-            artifactId = project.name
-            version = modVersion
-            
-            artifact(tasks.named("jar", Jar::class).get().archiveFile) {
-                builtBy(tasks["remapJar"])
-            }
-            
-            artifact(tasks["sourcesJar"]) {
-                builtBy(tasks["remapSourcesJar"])
-            }
-        }
     }
 }
