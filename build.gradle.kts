@@ -25,9 +25,6 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:$fabricVersion")
     val fabricKotlinVersion: String by project
     modImplementation("net.fabricmc:fabric-language-kotlin:$fabricKotlinVersion")
-    
-    implementation("org.freemarker:freemarker:2.3.31")
-    implementation("org.slf4j:slf4j-nop:1.7.30")
 }
 tasks {
     val javaVersion = JavaVersion.VERSION_16
